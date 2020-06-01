@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>OBS data loader</title>
+	<style>
+		*, *:before, *:after {box-sizing:border-box}
+		body{font: normal 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;background: rgb(50, 51, 60); color:#000; padding: 1em; -webkit-font-smoothing: subpixel-antialiased;}
+		button{font-size: 1em;text-transform: uppercase;border: none;line-height: 1;padding: .5em 1em;margin: 1em 1em 1em 0;border-radius: 0.2em}
+		button.dark {background: #242425;color:#444}
+		button:hover{background-color:#ff6a00; color:#fff}
+		img{margin-right:1em}
+		.img-btn{padding:.5em}
+		button.img-btn:hover{background:#7b7b7b}
+		.img-btn img{height:1.5em;margin:0}
+		#allData{width:100%}
+		#data_from_clipboard{display:none}
+		.output_preview{padding:.32em;background:#dbdbdc;border-radius:.5em;}
+		#input-data{padding:1em;border-radius:.5em;}
+		#data_from_clipboard{width:100%}
+		.output_preview > *:empty {display:none}
+		#type {background: #f59927;color: #fff;padding: .25em;border-radius: .25em;margin-bottom: .5em;text-transform:uppercase}
+	</style>
+
+  </head>
+  <body>
+	<div class="panel_input">
+		<textarea id="allData" onClick="clearTextarea()"></textarea>
+		<div id="data_from_clipboard"></div>
+
+		<button id="btn-load" onClick="load_from_clipboard()">Load</button>
+		<button id="btn-show_1" onClick="send('show', 'template-1', 'content')">Show (template 1)</button>
+		<button id="btn-show_2" onClick="send('show', 'template-2', 'content')">Show (template 2)</button>
+		<button id="btn-hide" onClick="send('hide', 'template-0', 'content')">Hide</button>
+		<br>
+		<button class="img-btn" id="btn-smile" onClick="send_icon('icon', 'smile', 'show')"><img src="images/smile.png"></button>
+		<button class="img-btn" id="btn-heart" onClick="send_icon('icon', 'heart', 'show')"><img src="images/heart.png"></button>
+		<button class="img-btn" id="btn-ok" onClick="send_icon('icon', 'ok', 'show')"><img src="images/ok.png"></button>
+		<button class="img-btn" id="btn-like" onClick="send_icon('icon', 'like', 'show')"><img src="images/like.png"></button>
+		<button class="img-btn" id="btn-wrong" onClick="send_icon('icon', 'wrong', 'show')"><img src="images/wrong.png"></button>
+		
+		
+	</div>
+
+	
+	<div class="output_preview">
+		<div id="type"></div>
+		<div id="image"></div>
+		<div id="name_surname"></div>
+		<div  id="context"></div>
+		<div  id="hostname"> </div>
+		<div  id="href"></div>
+	</div>
+	
+	<button class="dark" id="btn-reload" onClick="reload()">Reload panel</button>
+	
+	<script>
+		function load_from_clipboard(){
+			
+			/*clearing DIVs*/
+			document.getElementById("type").innerHTML="";
+			document.getElementById("image").innerHTML="";
+			document.getElementById("name_surname").innerHTML="";
+			document.getElementById("context").innerHTML="";
+			document.getElementById("hostname").innerHTML="";
+			document.getElementById("href").innerHTML="";
+			
+			/*resetting data*/
+			type='';
+			image='';
+			name_surname='';
+			content='';
+			hostname='';
+			href='';
+			status='';
+			template='';
+			template_host='';
+			
+			icon_smile='hidden';
+			icon_heart='hidden';
+			icon_ok='hidden';
+			icon_like='hidden';
+			icon_wrong='hidden';
+			
+			/*loading data*/
+
+				allData=document.getElementById("allData").value;
+				data_from_clipboard = allData.split("|");
+				type = data_from_clipboard[0]; console.log ("Type: " + type);
+				hostname = data_from_clipboard[1]; console.log ("Hostname: " + hostname);
+				href =  data_from_clipboard[2]; ; console.log ("Type of data: " + type);
+				document.getElementById("data_from_clipboard").innerHTML = data_from_clipboard[3];
+				switch (hostname) {
+					
+					default: console.log ("Unknown data");break;
+					
+					case ("www.facebook.com") :
+					{
+					imgsrc = document.getElementsByClassName('_3me-')[0].src;
+					name_surname=document.getElementsByClassName('_6qw4')[0].innerHTML;
+					content=document.getElementsByClassName('_3l3x')[0].innerHTML;
+					template_host="facebook";
+					document.getElementById("type").innerHTML = type + " from " + template_host;
+					document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+					document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+					document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+					document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+					document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+					}; break;
+					
+					case ("www.youtube.com") :
+					{
+					imgsrc = document.getElementById('img').src;
+					name_surname=strip_html_tags(document.getElementById("author-text").innerHTML);
+					content=strip_html_tags(document.querySelector("yt-formatted-string#content-text").innerHTML);
+					template_host="youtube";
+					document.getElementById("type").innerHTML = type + ' from ' + template_host;
+					document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+					document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+					document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+					document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+					document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+					}; break;
+					
+					case ("twitter.com") :
+					{
+					imgsrc = "";
+					name_surname=strip_html_tags(document.querySelector(".css-901oao.css-bfa6kz.r-1re7ezh.r-18u37iz.r-1qd0xha.r-a023e6.r-16dba41.r-ad9z0x.r-bcqeeo.r-qvutc0").innerHTML);
+					content="content";
+					template_host="twitter";
+					document.getElementById("type").innerHTML = type + ' from ' + template_host;
+					document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+					document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+					document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+					document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+					document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+					}; break;
+				}
+
+		}
+		
+		
+			function readClipboard(){
+						navigator.clipboard.readText().then(
+							clipText => document.getElementById("loaded_data").innerText = clipText);
+						}
+		
+		var bc_fb = new BroadcastChannel('obs-exchange-data');
+		
+		function send(status, template, type_of_data) {
+			data_to_send = [type_of_data,name_surname, content, imgsrc, hostname, href, status, template, template_host].join("|");
+			bc_fb.postMessage(data_to_send);
+			}
+			
+			
+		function send_icon(type_of_data, icon, status) {
+		data_to_send = [type_of_data, icon, status].join("|")
+		bc_fb.postMessage(data_to_send);
+		}
+			
+		function reload(){
+			location.reload()
+			}
+			
+		function strip_html_tags(str) {
+			if ((str===null) || (str===''))
+			return false;
+			else
+			str = str.toString();
+			return str.replace(/<[^>]*>/g, '');
+			}
+			
+		function clearTextarea(){
+		document.getElementById("allData").value="";
+		}
+	</script>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Show facebook comments</title>
+	<link href="fonts\Lato\style.css" rel="stylesheet">
+	<style>
+		*, *:before, *:after {box-sizing:border-box}
+		
+		body{font: normal 14px/1.4 'Lato', sans-serif;padding: 1em; }
+		
+		#data.hide, #data.hide > *{opacity:0}
+		
+		#data {
+		position: relative;
+		padding: 1em;
+		border-radius: .5em;
+		font-size: 2.2em;
+		margin-top:2em;
+		opacity: 1;
+		transition: all .15s ease-in;
+		}
+		
+		#emoji {position: absolute;bottom: -1.5em;right: 1em;}
+		#emoji img {height: 2.2em;margin:0;padding:0;transition:height .1s ease-out}
+		#emoji img.hide{height:0;margin:0}
+		
+		
+		#data.facebook.template-1{background: #2b487b url(images/fb-transparent.png) center right no-repeat;color:#fff;max-width:35em}
+		#data.facebook.template-2{background: #b0c5ea;color:#000;background-image:none;max-width:20em}
+		
+		#data.youtube.template-1{background: #d00909 url(images/yt-transparent.png) top right no-repeat;color:#fff;max-width:35em}
+		#data.youtube.template-2{background: #ead3d3;color:#000;background-image:none;max-width:20em}
+		
+		
+		#logo{display:none}
+		
+		.template-2 #logo {
+			display: block;
+			position: absolute;
+			top: -1em;
+			width: 3em;
+			height: 3em;
+			border-radius: 3em;
+			border: 2px solid #fff;
+		}
+		
+		.template-2.facebook #logo{background: #2b487b url(images/fb.png) center right/cover no-repeat;}
+		.template-2.youtube #logo{background: #ff0000 url(images/yt.png) center right/cover no-repeat;}
+
+		#image {
+		position: absolute;
+		top: -1em;
+		border-radius: .5em;
+		}
+		
+		.template-2 #image {
+		display:none;
+		}
+		
+		#image img {
+		width: 3em;
+		border-radius: 50%;
+		}
+		
+		#name {
+		text-align: right;
+		font-weight: 700;
+		margin-bottom: .5em;
+		}
+		
+		
+		#fullpath{display:none}
+		
+		.template-2 #fullpath {	display: block;word-break: break-all;font-size: .65em;text-align: right;margin-top: 1em;margin-bottom: .5em;
+}}
+
+
+
+
+	</style>
+    	
+		<script>
+		var bc = new BroadcastChannel('obs-exchange-data');
+		bc.onmessage = function (ev) {
+			received_data=ev.data.split("|");
+			type_of_content = received_data[0];
+			console.log ('Type of data: ' + type_of_content);
+			if (type_of_content=="content") {
+				template_received = received_data[7];
+					if (template_received !== "template-0") {template = received_data[7]; console.log ('Template: ' + template)};
+					if (template_received == "template-0") {console.log ("Hiding")};
+				template_host = received_data[8]; console.log ('Template host: ' + template_host);
+					document.getElementById("data").classList.remove(...document.getElementById("data").classList);
+					document.getElementById("data").classList.add(template, template_host);
+				
+				status = received_data[6]; console.log ('Status: ' + status);
+				if (status == "show")
+				{
+				name = received_data[1]; console.log ('Name: ' + name);
+				content = received_data[2]; console.log ('Content: ' + content);
+				image_path = received_data[3]; console.log ('Image path: ' + image_path);
+				hostname = received_data[4]; console.log ('Hostname: ' + hostname);
+				href = received_data[5]; console.log ('Full adress: ' + hostname);
+				
+				document.getElementById("name").innerHTML = name;
+				document.getElementById("content").innerHTML = content;
+				document.getElementById("image").innerHTML = '<img src="' + image_path + '">';
+				document.getElementById("fullpath").innerHTML = href;
+				
+				document.getElementById("data").classList.remove("hide")
+				};
+				 
+				if (status == "hide") {
+				document.getElementById("data").classList.add("hide");
+				document.getElementById("smile").classList.add("hide");
+				document.getElementById("ok").classList.add("hide");
+				document.getElementById("like").classList.add("hide");
+				document.getElementById("heart").classList.add("hide");
+				document.getElementById("wrong").classList.add("hide");
+				
+				}
+			}
+			
+		if (type_of_content=="icon") {
+			received_data=ev.data.split("|");
+			icon = received_data[1]; console.log ('Icon: ' + icon);
+			icon_status = received_data[2]; console.log ('Icon status: ' + icon_status);
+			document.getElementById(icon).classList.toggle("hide");
+				
+			}
+			
+		
+		}
+		
+		
+	</script>
+  </head>
+  <body>
+    <div id="data" class="hide">
+		<div id="logo"></div>
+		<div id="image"></div>
+		<div id="name"></div>
+		<div id="content"></div>
+		<div id="fullpath"></div>
+		<div id="emoji">
+			<img id="smile"src="images/smile.png" class="hide">
+			<img id="ok"src="images/ok.png" class="hide">
+			<img id="like"src="images/like.png" class="hide">
+			<img id="heart"src="images/heart.png" class="hide">
+			<img id="wrong"src="images/wrong.png" class="hide">
+		</div>
+	</div>
+  </body>
+</html>
+

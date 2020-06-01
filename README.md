@@ -4,8 +4,9 @@ https://chrome.google.com/webstore/detail/css-and-javascript-inject/ckddknfdmcem
 
 2. If you use "new" facebook layout, switch to older version
 
-3. Open installed extension and in tab "Javascript" paste this code:
+3. Open Facebook page in Chrome. Click on installed extension (yellow syringe icon) and in tab "Javascript" paste this code:
 https://pastebin.com/nhUFTL4R
+
 It will:
 - add button "copy" to every comment
 - add listener, which will copy the content of the comment (beware: it will overwrite your clipboard content!)

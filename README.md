@@ -1,3 +1,5 @@
+Demo: https://www.youtube.com/watch?v=Qc0cyKdevxo
+
 Chrome:
 1. Install this extension in Chrome:
 https://chrome.google.com/webstore/detail/css-and-javascript-inject/ckddknfdmcemedlmmebildepcmneakaa
@@ -9,7 +11,7 @@ https://pastebin.com/nhUFTL4R
 
 It will:
 - add button "copy" to every comment
-- add listener, which will copy the content of the comment (beware: it will overwrite your clipboard content!)
+- add listener, which will copy the content of the comment when clicking blue "copy" button (beware: it will overwrite your clipboard content!)
 
 You can check it by clicking on blue "copy" button and pasting the content of your clipboard into notepad.
 

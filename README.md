@@ -6,7 +6,7 @@ https://chrome.google.com/webstore/detail/css-and-javascript-inject/ckddknfdmcem
 
 3. Open installed extension and in tab "Javascript" paste this code:
 https://pastebin.com/nhUFTL4R
-if you can read javascript - you can see, it's safe code. It will:
+It will:
 - add button "copy" to every comment
 - add listener, which will copy the content of the comment (beware: it will overwrite your clipboard content!)
 

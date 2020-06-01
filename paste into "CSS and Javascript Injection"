@@ -1,0 +1,17 @@
+	/*facebook*/
+	var added_css ='._4eek ._42ef:after {content: "Copy";position: absolute;right: 1em;top: 0;text-transform: uppercase;font-size: .6em;background: #b1cbff;padding: .4em 1em;border-radius: 6em;color: #fff;line-height: 1;transition:all .3s;cursor:pointer}._4eek ._42ef:hover:after{background: #4267b2}';
+	var style = document.createElement('style');
+		if (style.styleSheet) {style.styleSheet.cssText = added_css} else
+			{style.appendChild(document.createTextNode(added_css))}
+		document.getElementsByTagName('head')[0].appendChild(style);
+
+		data_to_send = [];
+		
+		document.addEventListener('click',function(e){
+			if (e.target.classList.contains("_42ef")) {
+				closestElement = e.target.closest("._4eek");
+				input_data = closestElement.innerHTML;
+				data_to_send = ["comment", window.location.hostname, window.location.href, input_data].join("|");
+				navigator.clipboard.writeText(data_to_send);
+			}
+		 });

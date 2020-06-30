@@ -98,17 +98,34 @@
 					
 					case ("www.facebook.com") :
 					{
-					imgsrc = document.getElementsByClassName('_3me-')[0].src;
-					name_surname=document.getElementsByClassName('_6qw4')[0].innerHTML;
-					content=document.getElementsByClassName('_3l3x')[0].innerHTML;
-					template_host="facebook";
-					document.getElementById("type").innerHTML = type + " from " + template_host;
-					document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
-					document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
-					document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
-					document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
-					document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
-					}; break;
+						if (type=="comment"){
+						console.log('comment');
+						imgsrc = document.getElementsByClassName('_3me-')[0].src;
+						name_surname=document.getElementsByClassName('_6qw4')[0].innerHTML;
+						content=document.getElementsByClassName('_3l3x')[0].innerHTML;
+						template_host="facebook";
+						document.getElementById("type").innerHTML = type + " from " + template_host;
+						document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+						document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+						document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+						document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+						document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+						}
+						if (type=="live video comment - single video"){
+						console.log('live');
+						imgsrc = document.querySelector('.UFIActorImage').src; console.log ('imgsrc= ' + imgsrc);
+						name_surname=document.querySelector('.UFICommentActorName').innerHTML; console.log ('name_surname: ' + name_surname);
+						content=document.querySelector(".UFICommentBody").innerHTML; console.log('content: ' + content);
+						template_host="facebook";
+						document.getElementById("type").innerHTML = type + " from " + template_host;
+						document.getElementById("image").innerHTML = '<img src="' + imgsrc + '">';
+						document.getElementById("name_surname").innerHTML = '<strong>Name:</strong> ' + name_surname;
+						document.getElementById("context").innerHTML = '<strong>Content:</strong> ' + content;
+						document.getElementById("hostname").innerHTML = '<strong>Hostname:</strong> ' + hostname;
+						document.getElementById("href").innerHTML = '<strong>Full adress:</strong> ' + href;
+						}
+					}
+					; break;
 					
 					case ("www.youtube.com") :
 					{

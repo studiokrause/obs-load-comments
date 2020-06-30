@@ -1,3 +1,7 @@
+UPDATE 2020+06-30: Now you can load comments from facebook live. Replace "dock.html" file and code injected into facebook page (from file "paste into 'CSS and Javascript Injection' on Facebook page.txt").
+
+---
+
 Demo: https://www.youtube.com/watch?v=Qc0cyKdevxo
 
 Chrome:
